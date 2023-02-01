@@ -1,9 +1,10 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#define LED_BUILTIN 5
 String DAMAC = "1024";
-const char* ssid = "********";
-const char* password = "***********!";
+const char* ssid = "***********";
+const char* password = "***********";
 const char* mqtt_server = "192.168.11.196"; // ubuntu IP
 
 WiFiClient espClient;
@@ -30,6 +31,20 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
+void blink(){
+  for(int i = 0; i<5; i++){
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+  }
+  digitalWrite(LED_BUILTIN, LOW);
+}
+
+void offled(){
+  digitalWrite(LED_BUILTIN, HIGH);
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
  
   Serial.print("Message arrived in topic: ");
@@ -42,6 +57,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
   if((char)payload[0]=='a'){
     Serial.println("order received");
+    blink();
+  } 
+  else if((char)payload[0]=='b'){
+    offled();
   }
   Serial.println("-----------------------");
 }
@@ -64,6 +83,8 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   setup_wifi();
   client.setServer(mqtt_server, 1883);
@@ -81,7 +102,7 @@ void setup() {
     }
   }
 
-  client.subscribe("esp/1");
+  client.subscribe("esp/2");
   Serial.println("setup() done");
   Serial.println("-----------------------");
 }
