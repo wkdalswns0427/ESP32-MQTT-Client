@@ -3,12 +3,23 @@ import paho.mqtt.client as mqtt
 from fastapi_mqtt.fastmqtt import FastMQTT
 from fastapi_mqtt.config import MQTTConfig
 from fastapi import FastAPI
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 mqtt_config = MQTTConfig()
 fast_mqtt = FastMQTT(config=mqtt_config)
 fast_mqtt.init_app(app)
+templates = Jinja2Templates(directory='./templates/')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=["*"]
+)
 
 broker = 'localhost'
 pubclient = mqtt.Client("pubclient")
@@ -37,11 +48,11 @@ async def first():
 @app.get("/publish")
 async def pub():
     fast_mqtt.publish("esp/1", "publisher")
-    ret = "esp/test : atest message"
+    ret = "esp/1 : publisher"
     return ret
 
 @app.post("/command")
-async def unaposta(item : Item):
+async def sendcommand(item : Item):
     topic = item.name + "/" + str(item.number)
     fast_mqtt.publish(topic, item.content)
     return topic
