@@ -11,7 +11,7 @@ app = FastAPI()
 mqtt_config = MQTTConfig()
 fast_mqtt = FastMQTT(config=mqtt_config)
 fast_mqtt.init_app(app)
-templates = Jinja2Templates(directory='./templates/')
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,6 +21,29 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+class Item(BaseModel):
+    name : str
+    number : int
+    content : str
+
+@app.get("/")
+async def first():
+    hi = "api server on"
+    return hi
+
+@app.get("/publish")
+async def pub():
+    fast_mqtt.publish("esp/1", "avalanche")
+    ret = "esp/1 : avalanche"
+    return ret
+
+@app.post("/command")
+async def sendcommand(item : Item):
+    topic = item.name + "/" + str(item.number)
+    fast_mqtt.publish(topic, item.content)
+    return topic
+
+# --------------------- depricated ---------------------
 # broker = 'localhost'
 # pubclient = mqtt.Client("pubclient")
 # pubclient.connect(broker,1883)
@@ -29,25 +52,4 @@ app.add_middleware(
 #     pubclient = mqtt.Client("pubclient")
 #     pubclient.connect('localhost',1883)
 #     pubclient.publish("esp/test", "atest message")
-
-class Item(BaseModel):
-    name : str
-    number : int
-    content : str
-
-@app.get("/")
-async def first():
-    hi = "hello"
-    return hi
-
-@app.get("/publish")
-async def pub():
-    fast_mqtt.publish("esp/1", "publisher")
-    ret = "esp/1 : publisher"
-    return ret
-
-@app.post("/command")
-async def sendcommand(item : Item):
-    topic = item.name + "/" + str(item.number)
-    fast_mqtt.publish(topic, item.content)
-    return topic
+# ------------------------------------------------------
