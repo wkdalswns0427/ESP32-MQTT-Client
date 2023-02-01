@@ -21,24 +21,19 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-broker = 'localhost'
-pubclient = mqtt.Client("pubclient")
-pubclient.connect(broker,1883)
+# broker = 'localhost'
+# pubclient = mqtt.Client("pubclient")
+# pubclient.connect(broker,1883)
+
+# def mqttclient():
+#     pubclient = mqtt.Client("pubclient")
+#     pubclient.connect('localhost',1883)
+#     pubclient.publish("esp/test", "atest message")
 
 class Item(BaseModel):
     name : str
     number : int
     content : str
-
-def mqttclient():
-    pubclient = mqtt.Client("pubclient")
-    pubclient.connect('localhost',1883)
-    pubclient.publish("esp/test", "atest message")
-
-def fastmqttCLient(num):
-    topic = "esp/" + num
-    fast_mqtt.publish(topic, "publisher")
-
 
 @app.get("/")
 async def first():
