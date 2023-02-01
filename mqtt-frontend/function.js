@@ -11,36 +11,71 @@ function getTest(url){
 }
 
 function esp1(){
-    fetch(url,
-        {
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify({
-              name: "esp",
-              number: 1,
-              content: "avalon",  
-            }),
-        }).then((response)=>console.log(response));
+    if(document.getElementById("esp1").checked == true){
+        console.log("on");
+        fetch(url,
+            {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                name: "esp",
+                number: 1,
+                content: "avalon",  
+                }),
+            }).then((response)=>console.log(response));
+    } else{
+        console.log("off");
+        fetch(url,
+            {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                name: "esp",
+                number: 1,
+                content: "babilon",  
+                }),
+            }).then((response)=>console.log(response));
+    }
 }
 
 function esp2(){
-    fetch(url,
-        {
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify({
-              name: "esp",
-              number: 2,
-              content: "avalon",  
-            }),
-        }).then((response)=>console.log(response));
+    if(document.getElementById("esp2").checked == true){
+        console.log("on");
+        fetch(url,
+            {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                name: "esp",
+                number: 2,
+                content: "avalon",  
+                }),
+            }).then((response)=>console.log(response));
+    }else {
+        console.log("off");
+        fetch(url,
+            {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                name: "esp",
+                number: 2,
+                content: "babilon",  
+                }),
+            }).then((response)=>console.log(response));
+    }
 }
 
 function esp3(){
+    if(document.getElementById("esp3").checked == true){
     fetch(url,
         {
             method : "POST",
@@ -53,6 +88,9 @@ function esp3(){
               content: "avalon",  
             }),
         }).then((response)=>console.log(response));
+    } else {
+        console.log("off");
+    }
 }
 
 
