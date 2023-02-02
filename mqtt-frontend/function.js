@@ -3,6 +3,7 @@ var url_on = 'http://localhost:8000/dummyon'
 var url_off = 'http://localhost:8000/dummyoff'
 
 function esp1(){
+    var dsc = document.getElementById("discount1");
     if(document.getElementById("esp1").checked == true){
         var carno = document.getElementById("carno1").value;
         console.log("on");
@@ -22,7 +23,11 @@ function esp1(){
             .then(type => type.json())
             .then(json => {
                 console.log(json);
-            })
+                if(json["discount"]==true){
+                    console.log("discount!!")
+                    dsc.style.display = 'block'
+                }
+            });
     } else{
         console.log("off");
         fetch(url_off,
@@ -36,11 +41,13 @@ function esp1(){
                 number: 1,
                 content: "babilon",  
                 }),
-            }).then((response)=>console.log(response));
+            }).then((response)=>console.log(response))
+            .then(dsc.style.display = 'none');
     }
 }
 
 function esp2(){
+    var dsc = document.getElementById("discount2");
     if(document.getElementById("esp2").checked == true){
         console.log("on");
         var carno = document.getElementById("carno2").value;
@@ -60,7 +67,11 @@ function esp2(){
             .then(type => type.json())
             .then(json => {
                 console.log(json);
-            })
+                if(json["discount"]==true){
+                    console.log("discount!!")
+                    dsc.style.display = 'block'
+                }
+            });
     }else {
         console.log("off");
         fetch(url_off,
@@ -74,11 +85,13 @@ function esp2(){
                 number: 2,
                 content: "babilon",  
                 }),
-            }).then((response)=>console.log(response));
+            }).then((response)=>console.log(response))
+            .then(dsc.style.display = 'none');
     }
 }
 
 function esp3(){
+    var dsc = document.getElementById("discount3");
     if(document.getElementById("esp3").checked == true){
     var carno = document.getElementById("carno3").value;
     console.log("on");
@@ -98,7 +111,11 @@ function esp3(){
         .then(type => type.json())
         .then(json => {
             console.log(json);
-        })
+            if(json["discount"]==true){
+                console.log("discount!!")
+                dsc.style.display = 'block'
+            }
+        });
         // .then((response)=>console.log(response.json()))
     } else {
         console.log("off");
@@ -113,7 +130,9 @@ function esp3(){
                 number: 3,
                 content: "babilon",  
                 }),
-            }).then((response)=>console.log(response));
+            })
+            .then((response)=>console.log(response))
+            .then(dsc.style.display = 'none');
     }
 }
 
