@@ -1,10 +1,12 @@
 
-var url = 'http://localhost:8000/command'
+var url_on = 'http://localhost:8000/dummyon'
+var url_off = 'http://localhost:8000/dummyoff'
 
 function esp1(){
     if(document.getElementById("esp1").checked == true){
+        var carno = document.getElementById("carno1").value;
         console.log("on");
-        fetch(url,
+        fetch(url_on,
             {
                 method : "POST",
                 headers : {
@@ -13,12 +15,17 @@ function esp1(){
                 body: JSON.stringify({
                 name: "esp",
                 number: 1,
-                content: "avalon",  
+                content: "avalon", 
+                carnumber: carno, 
                 }),
-            }).then((response)=>console.log(response));
+            })
+            .then(type => type.json())
+            .then(json => {
+                console.log(json);
+            })
     } else{
         console.log("off");
-        fetch(url,
+        fetch(url_off,
             {
                 method : "POST",
                 headers : {
@@ -36,7 +43,8 @@ function esp1(){
 function esp2(){
     if(document.getElementById("esp2").checked == true){
         console.log("on");
-        fetch(url,
+        var carno = document.getElementById("carno2").value;
+        fetch(url_on,
             {
                 method : "POST",
                 headers : {
@@ -45,12 +53,17 @@ function esp2(){
                 body: JSON.stringify({
                 name: "esp",
                 number: 2,
-                content: "avalon",  
+                content: "avalon",
+                carnumber: carno,
                 }),
-            }).then((response)=>console.log(response));
+            })
+            .then(type => type.json())
+            .then(json => {
+                console.log(json);
+            })
     }else {
         console.log("off");
-        fetch(url,
+        fetch(url_off,
             {
                 method : "POST",
                 headers : {
@@ -67,7 +80,9 @@ function esp2(){
 
 function esp3(){
     if(document.getElementById("esp3").checked == true){
-    fetch(url,
+    var carno = document.getElementById("carno3").value;
+    console.log("on");
+    fetch(url_on,
         {
             method : "POST",
             headers : {
@@ -77,11 +92,17 @@ function esp3(){
               name: "esp",
               number: 3,
               content: "avalon",  
+              carnumber: carno,
             }),
-        }).then((response)=>console.log(response));
+        })
+        .then(type => type.json())
+        .then(json => {
+            console.log(json);
+        })
+        // .then((response)=>console.log(response.json()))
     } else {
         console.log("off");
-        fetch(url,
+        fetch(url_off,
             {
                 method : "POST",
                 headers : {
