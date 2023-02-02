@@ -3,15 +3,18 @@ import paho.mqtt.client as mqtt
 from fastapi_mqtt.fastmqtt import FastMQTT
 from fastapi_mqtt.config import MQTTConfig
 from fastapi import FastAPI
-from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+from model import Item, DiscountItem, IsDiscount
+from utils import dataHandler
 from starlette.middleware.cors import CORSMiddleware
+import httpx
+import asyncio
 
 app = FastAPI()
 mqtt_config = MQTTConfig()
 fast_mqtt = FastMQTT(config=mqtt_config)
 fast_mqtt.init_app(app)
 
+parking_api = "http://this_api_doesn_not_exist:8080"
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,10 +24,12 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-class Item(BaseModel):
-    name : str
-    number : int
-    content : str
+async def call_parking_api(userInfo):
+    async with httpx.AsyncClient() as Client:
+        response = Client.post(parking_api, content=userInfo)
+        return response
+    return response
+
 
 @app.get("/")
 async def first():
@@ -37,19 +42,52 @@ async def pub():
     ret = "esp/1 : avalanche"
     return ret
 
-@app.post("/command")
-async def sendcommand(item : Item):
+
+# -------------------- dummy api ---------------------
+@app.post("/dummyon", description="dummy charger on")
+async def dummyon(item : DiscountItem):
+
+    dcItem = IsDiscount()
+    datahandle = dataHandler()
+
+    # decide whether to give discount or not
+    if datahandle.matchCar(item.carnumber)==True:
+        dcItem.discount = True
+
     topic = item.name + "/" + str(item.number)
     fast_mqtt.publish(topic, item.content)
-    return topic
+    return dcItem.discount
 
-# --------------------- depricated ---------------------
-# broker = 'localhost'
-# pubclient = mqtt.Client("pubclient")
-# pubclient.connect(broker,1883)
+@app.post("/dummyoff")
+async def dummyoff(item : Item):
 
-# def mqttclient():
-#     pubclient = mqtt.Client("pubclient")
-#     pubclient.connect('localhost',1883)
-#     pubclient.publish("esp/test", "atest message")
-# ------------------------------------------------------
+    topic = item.name + "/" + str(item.number)
+    fast_mqtt.publish(topic, item.content)
+
+    # return topic+":"+item.content
+    return True
+# ----------------------------------------------------
+
+# -------------------- actual api --------------------
+# call_parking_api -> get yes or no data
+@app.post("/chargerdiscountcheck")
+async def chargerdiscountcheck(item : DiscountItem):
+
+    dcItem = IsDiscount()
+    
+
+    # datahandle = dataHandler()
+
+    # if datahandle.matchDate==True and datahandle.matchCar==True:
+    #     dcItem.discount = True
+
+
+    topic = item.name + "/" + str(item.number)
+    fast_mqtt.publish(topic, item.content)
+
+    return dcItem.discount
+
+@app.post("/chargerbegin")
+async def chargerbegin():
+
+    return False
