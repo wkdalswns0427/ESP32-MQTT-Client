@@ -2,15 +2,6 @@
 var url = 'http://localhost:8000/command'
 
 function esp1(){
-    
-}
-
-function getTest(url){
-    fetch('http://localhost:8000').then((response)=>console.log(response));
-
-}
-
-function esp1(){
     if(document.getElementById("esp1").checked == true){
         console.log("on");
         fetch(url,
@@ -90,6 +81,18 @@ function esp3(){
         }).then((response)=>console.log(response));
     } else {
         console.log("off");
+        fetch(url,
+            {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                name: "esp",
+                number: 3,
+                content: "babilon",  
+                }),
+            }).then((response)=>console.log(response));
     }
 }
 
