@@ -4,7 +4,7 @@ API server, Frontend, and Frimware to manipulate multi esps via web
 ## Configuration
 - MCU : ESP32 -> LOLIN D32 PRO
 - API server : REST API based on FastAPI framework
-- Frontend : 
+- Frontend : Javascript
 
 ## How to Use
 ### MCU(ESP32)
