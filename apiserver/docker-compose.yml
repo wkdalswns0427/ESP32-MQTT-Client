@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+  mqtt:
+    image: toke/mosquitto
+    container_name: mqtt
+    expose:
+      - 1883
+    ports:
+      - 1883:1883
+    restart: unless-stopped
+    networks:
+      - docker-net
+  
+  api-server:
+    container_name: apiserver
+    expose: 
+      - 8000
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    networks:
+      - docker-net
+    depends_on:
+      - mqtt
+
+networks:
+  docker-net:
+    driver: bridge
