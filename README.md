@@ -15,5 +15,13 @@ run code below
 ```
 uvicorn app:app --host 0.0.0.0 --reload
 ```
+or in case of Docker
+
+```
+docker-compose on
+```
+might need to change line 17 of app.py to `mqtt_config = MQTTConfig(host = "containerIP", port=1883)`
 
 ### Frontend
+
+dummy demo frontend with simple query
