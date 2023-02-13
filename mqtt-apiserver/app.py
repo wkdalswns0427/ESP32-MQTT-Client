@@ -3,14 +3,14 @@ import paho.mqtt.client as mqtt
 from fastapi_mqtt.fastmqtt import FastMQTT
 from fastapi_mqtt.config import MQTTConfig
 from fastapi import FastAPI
-from model import Item, DiscountItem, IsDiscount
-from utils import dataHandler
+from utils.model import Item, DiscountItem, IsDiscount, DBItem
+from utils.utils import dataHandler
 from starlette.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
 
 app = FastAPI()
-mqtt_config = MQTTConfig()
+mqtt_config = MQTTConfig(host = "172.25.0.2", port=1883)
 fast_mqtt = FastMQTT(config=mqtt_config)
 fast_mqtt.init_app(app)
 
@@ -26,7 +26,8 @@ app.add_middleware(
 
 async def call_parking_api(userInfo):
     async with httpx.AsyncClient() as Client:
-        response = Client.post(parking_api, content=userInfo)
+        response = Client.get(parking_api, params=userInfo)
+        data = response.json()
         return response
     return response
 
@@ -56,7 +57,7 @@ async def dummyon(item : DiscountItem):
 
     topic = item.name + "/" + str(item.number)
     fast_mqtt.publish(topic, item.content)
-    return dcItem.discount
+    return dcItem
 
 @app.post("/dummyoff")
 async def dummyoff(item : Item):
@@ -70,7 +71,7 @@ async def dummyoff(item : Item):
 
 # -------------------- actual api --------------------
 # call_parking_api -> get yes or no data
-@app.post("/chargerdiscountcheck")
+@app.get("/chargerdiscountcheck")
 async def chargerdiscountcheck(item : DiscountItem):
 
     dcItem = IsDiscount()

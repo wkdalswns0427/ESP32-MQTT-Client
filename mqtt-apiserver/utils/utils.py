@@ -5,7 +5,7 @@ import pandas as pd
 
 class dataHandler():
     def __init__(self):
-        self.df = pd.read_csv("dummy.csv",header=0, index_col=0)
+        self.df = pd.read_csv("db/dummy.csv",header=0, index_col=0)
 
     def getDate(self):
         self.x = dt.datetime.now()
