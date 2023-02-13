@@ -19,6 +19,8 @@ services:
       - 8000
     ports:
       - 8000:8000
+    volumes:
+      - /home/<your directory>/db/dummy.csv:/app/db/dummy.csv
     restart: unless-stopped
     build:
       context: .
