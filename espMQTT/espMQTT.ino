@@ -6,6 +6,7 @@ String DAMAC = "1024";
 const char* ssid = "***********";
 const char* password = "***********";
 const char* mqtt_server = "192.168.11.196"; // ubuntu IP
+const char* esp_id = "esp/1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -102,7 +103,7 @@ void setup() {
     }
   }
 
-  client.subscribe("esp/2");
+  client.subscribe(esp_id);
   Serial.println("setup() done");
   Serial.println("-----------------------");
 }
