@@ -1,15 +1,16 @@
-#include <WiFi.h>
+   #include <WiFi.h>
 #include <PubSubClient.h>
 
 #define LED_BUILTIN 5
 String DAMAC = "1024";
-const char* ssid = "***********";
-const char* password = "***********";
+const char* ssid = "DRIMAES-3F";
+const char* password = "drimaes1303!";
 const char* mqtt_server = "192.168.11.196"; // ubuntu IP
-const char* esp_id = "esp/1";
+const char* esp_id = "esp/3";
+const char* clientName = "ESP32Client3";
 
-WiFiClient espClient;
-PubSubClient client(espClient);
+WiFiClient espClient3;
+PubSubClient client(espClient3);
 
 
 void setup_wifi() {
@@ -71,7 +72,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP32Client")) {
+    if (client.connect(clientName)) {
       Serial.println("connected");
     } else {
       Serial.print("failed, rc=");
@@ -94,7 +95,7 @@ void setup() {
   while (!client.connected()) {
     Serial.println("Connecting to MQTT...");
  
-    if (client.connect("ESP32Client")) {
+    if (client.connect(clientName)) {
       Serial.println("connected");  
     } else {
       Serial.print("failed with state ");
