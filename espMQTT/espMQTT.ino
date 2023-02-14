@@ -3,8 +3,8 @@
 
 #define LED_BUILTIN 5
 String DAMAC = "1024";
-const char* ssid = "DRIMAES-3F";
-const char* password = "drimaes1303!";
+const char* ssid = "************";
+const char* password = "*******!";
 const char* mqtt_server = "192.168.11.196"; // ubuntu IP
 const char* esp_id = "esp/3";
 const char* clientName = "ESP32Client3";
