@@ -11,7 +11,7 @@ services:
     networks:
       docker-net:
         # fix ip
-        ipv4_address: 172.25.0.2
+        ipv4_address: 172.25.0.2 # container net internal ip
   
   api-server:
     container_name: apiserver
@@ -20,8 +20,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - /home/<your directory>/db/dummy.csv:/app/db/dummy.csv
-    restart: unless-stopped
+      - /home/<your directory>/db/:/app/db/ # just directory not file name
     build:
       context: .
       dockerfile: Dockerfile
